@@ -1,0 +1,42 @@
+.home{
+    padding: 4rem 6%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &-box{
+        padding: 4rem;
+        border: 1px solid #000;
+        cursor: pointer;
+        font-size: 20px;
+        font-weight: 600;
+        text-align: center;
+        box-sizing: border-box;
+        text-decoration: none;
+        color: #000;
+        &.owners{
+            margin-right: 5%;
+        }
+        &.search{
+            margin-left: 5%;
+        }
+        &:hover{
+            background-color: aliceblue;
+        }
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .home{
+        flex-direction: column;
+        &-box{
+            width: 100%;
+            &.owners{
+                margin-right: 0;
+                margin-bottom: 4rem;
+            }
+            &.search{
+                margin-left: 0;
+            }
+        }
+    }
+}

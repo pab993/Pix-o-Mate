@@ -1,6 +1,18 @@
+import { CONFIG } from "../../utils/pages-config";
+import './styles.scss';
+
 const Header = (props) => {
+
+    const bPages = CONFIG.pages.find((f) => f.slug === props?.page);
+
     return ( 
-        <>Cabecera</>
+        <header className="header">
+            <div className="header-icon cat">0</div>
+            <div className="header-breadcrumbs">
+                <h1 className="noMargin">{bPages && bPages.breadcrumbs.title}</h1>
+            </div>
+            <div className="header-icon heart">0</div>
+        </header>
      );
 }
  

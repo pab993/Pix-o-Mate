@@ -1,7 +1,6 @@
 const Main = ({children}) => {
     return ( 
         <main>
-            <div>Cuerpo</div>
             {children}
         </main>
     );

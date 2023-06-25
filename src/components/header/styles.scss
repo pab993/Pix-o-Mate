@@ -1,0 +1,21 @@
+.header{
+    display: flex;
+    padding: 2rem 6%;
+    justify-content: space-between;
+    align-items: center;
+    background-color: aliceblue;
+    &-icon{
+        background-repeat: no-repeat;
+        background-position: left;
+        font-weight: 600;
+        &.cat{
+            background-image: url(../../assets/cat.png);
+            padding-left: 32px;
+        }
+        &.heart{
+            background-image: url(../../assets/heart.png);
+            background-size: contain;
+            padding-left: 24px;
+        }
+    }
+}
