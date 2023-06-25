@@ -3,6 +3,7 @@ import { instance } from "../../utils/axios-config";
 import loadingIcon from '../../assets/loading.gif';
 import './styles.scss';
 import DetailsComponent from "../../components/details/Details";
+import { generateCreationDate, generatePhone } from "../../utils/commons";
 
 const OwnersPage = () => {
 
@@ -13,7 +14,6 @@ const OwnersPage = () => {
     const [totalPages, setTotalPages] = useState();
     const [loading, setLoading] = useState(true);
     const [loadingBtn, setLoadingBtn] = useState(false);
-    const [selected, setSelected] = useState();
     const [error, setError] = useState(false);
 
     useEffect(() => {
@@ -26,7 +26,8 @@ const OwnersPage = () => {
             instance.defaults.headers.common = {'Authorization': `Bearer ${process.env.REACT_APP_GOREST_API_KEY}`}
         
             await instance.get(buildUrl).then(function(resp) {
-                setOwners(resp.data);
+                let ownersList = addData(resp.data);
+                setOwners(ownersList);
                 setTotalPages(resp.headers.get('X-Pagination-Pages'));
             }).catch(function(err) {
                 setError(true);
@@ -44,7 +45,9 @@ const OwnersPage = () => {
             instance.defaults.headers.common = {'Authorization': `Bearer ${process.env.REACT_APP_GOREST_API_KEY}`}
             setLoadingBtn(true);
             await instance.get(buildUrl).then(function(resp) {
-                setOwners([...owners, ...resp.data]);
+                let newList = addData(resp.data);
+                let ownersList = addData([...owners, ...newList]);
+                setOwners(ownersList);
             }).catch(function(err) {
                 setError(true);
             }).finally(()=>{
@@ -57,12 +60,39 @@ const OwnersPage = () => {
         }
     }
 
-    const handlerSelected = (id) => {
-        if(!selected || (id !== selected)){
-            setSelected(id);
-        }else if(id === selected){
-            setSelected();
+    const addData = (ownersList) => {
+        let addedFields = ownersList.map((o) => {
+            o.phone = generatePhone();
+            o.created_at = generateCreationDate(new Date(2012, 0, 1), new Date());
+            o.selected = false;
+            return o;
+        });
+        return addedFields;
+    }
+
+    const handlerSelected = (owner) => {
+        let ownersList = [];
+        if(owner.selected){
+            ownersList = owners.map((o) => {
+                if(o.id === owner.id){
+                    o.selected = false;
+                    return o;
+                }else{
+                    return o;
+                }
+            });
+        }else{
+            ownersList = owners.map((o) => {
+                if(o.id === owner.id){
+                    o.selected = true;
+                    return o;
+                }else{
+                    o.selected = false;
+                    return o;
+                }
+            });
         }
+        setOwners(ownersList);
     }
 
     return ( 
@@ -81,11 +111,11 @@ const OwnersPage = () => {
                                 <ul className="owners-list">
                                     {owners.length > 0 ? (
                                             <>
-                                                {owners.map((owner, index) => {
+                                                {owners.map((owner) => {
                                                     return (
                                                         <Fragment key={"owner-row-" + owner.id}>
-                                                            <li className={"owners-item" + (owner.id === selected ? " selected" : "")} onClick={() => handlerSelected(owner.id)}>
-                                                                {owner.name}, {owner.status}
+                                                            <li className={"owners-item" + (owner.selected ? " selected" : "")} onClick={() => handlerSelected(owner)}>
+                                                                {owner.name}, {owner.email}, {owner.gender}, {owner.status}
                                                             </li>
                                                         </Fragment>
                                                     )
@@ -109,7 +139,7 @@ const OwnersPage = () => {
                                     </>
                                 }
                             </div>
-                            <DetailsComponent id={selected}/>
+                            <DetailsComponent owners={owners} setOwners={setOwners}/>
                         </>
                     }
                 </div>

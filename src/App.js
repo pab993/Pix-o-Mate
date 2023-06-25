@@ -5,6 +5,7 @@ import HeaderComponent from "./components/header/Header";
 import MainComponent from "./components/main/Main";
 import OwnersPage from "./pages/owners/OwnersPage";
 import SearchPage from "./pages/search/SearchPage";
+import StatusProvider from './context/Status';
 
 function App() {
 
@@ -44,7 +45,9 @@ function App() {
 
   return (
     <>
-      <RouterComponent />
+      <StatusProvider>
+        <RouterComponent />
+      </StatusProvider>
     </>
   );
 }
