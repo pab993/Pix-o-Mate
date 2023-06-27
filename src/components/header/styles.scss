@@ -4,6 +4,14 @@
     justify-content: space-between;
     align-items: center;
     background-color: aliceblue;
+    &-breadcrumbs{
+        display: flex;
+        align-items: center;
+        img{
+            width: 30px;
+            cursor: pointer;
+        }
+    }
     &-icon{
         background-repeat: no-repeat;
         background-position: left;
@@ -16,6 +24,7 @@
             background-image: url(../../assets/heart.png);
             background-size: contain;
             padding-left: 24px;
+            cursor: pointer;
         }
     }
 }

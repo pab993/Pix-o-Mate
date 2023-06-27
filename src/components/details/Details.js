@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import { instance } from '../../utils/axios-config';
 import './styles.scss';
+import { useStatus } from '../../context/Status';
 
 const Details = ({owners, setOwners}) => {
 
+    const {favs, updateFavs} = useStatus();
     const [currentOwner, setCurrentOwner] = useState(owners.find((o)=> {return o.selected}));
 
     useEffect(() => {
@@ -37,6 +39,15 @@ const Details = ({owners, setOwners}) => {
         }
     }
 
+    const addRemoveFav = (current) => {
+        if(!favs.some(item => current.id === item.id)){
+            delete current.selected;
+            updateFavs([...favs, current]);
+        }else{
+            updateFavs(favs.filter((item) => { return current.id !== item.id}));
+        }
+    }
+
     return ( 
         <>
             {currentOwner &&
@@ -49,7 +60,7 @@ const Details = ({owners, setOwners}) => {
                     <p>{currentOwner.status}</p>
                     <p>{currentOwner.phone}</p>
                     <p>{currentOwner.created_at}</p>
-                    <button className="btn">Añadir a favoritos</button>
+                    <button className="btn" onClick={() => addRemoveFav(currentOwner)}>{favs.some(item => currentOwner.id === item.id) ? "Quitar de favoritos" : "Añadir a favoritos"}</button>
                 </div>
                 </div>
             }

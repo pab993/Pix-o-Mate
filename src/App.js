@@ -4,7 +4,6 @@ import HomePage from "./pages/home/HomePage";
 import HeaderComponent from "./components/header/Header";
 import MainComponent from "./components/main/Main";
 import OwnersPage from "./pages/owners/OwnersPage";
-import SearchPage from "./pages/search/SearchPage";
 import StatusProvider from './context/Status';
 
 function App() {
@@ -23,7 +22,7 @@ function App() {
   const OwnersComponent = () =>
     Skeleton(OwnersPage, {page: "owners"});
   const SearchComponent = () =>
-    Skeleton(SearchPage, {page: "search"});
+    Skeleton(OwnersPage, {page: "search", text: true});
 
   const RouterComponent = () => {
     return (
@@ -35,7 +34,7 @@ function App() {
           <Route path="/owners" element={
             <OwnersComponent />
           }/>
-          <Route path="/owners" element={
+          <Route path="/search" element={
             <SearchComponent />
           }/>
         </Routes>

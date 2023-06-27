@@ -1,20 +1,49 @@
+import { useState } from "react";
 import { useStatus } from "../../context/Status";
 import { CONFIG } from "../../utils/pages-config";
+import FavModal from "../modals/FavModal";
 import './styles.scss';
+import { useNavigate } from "react-router-dom";
+import backIcon from '../../assets/back-arrow.png';
 
 const Header = (props) => {
 
     const {favs} = useStatus();
+    const [open, setOpen] = useState(false);
     const bPages = CONFIG.pages.find((f) => f.slug === props?.page);
 
+    const navigate = useNavigate();
+
+    const renderBreabcrumb = (item) =>
+        item.to ? (
+            <>
+                <img src={backIcon} alt="Retroceder"
+                    onClick={() => {
+                        navigate(item.to);
+                    }
+                }/>
+                
+                <h1 className="noMargin">
+                    {item.title}
+                </h1>
+            </>
+        ) : (
+            <h1 className="noMargin">
+                {item.title}
+            </h1>
+    );
+
     return ( 
-        <header className="header">
-            <div className="header-icon cat">0</div>
-            <div className="header-breadcrumbs">
-                <h1 className="noMargin">{bPages && bPages.breadcrumbs.title}</h1>
-            </div>
-            <div className="header-icon heart">{favs}</div>
-        </header>
+        <>
+            <header className="header">
+                <div className="header-icon cat">0</div>
+                <div className="header-breadcrumbs">
+                    {bPages && renderBreabcrumb(bPages.breadcrumbs)}
+                </div>
+                <div className="header-icon heart" onClick={() => setOpen(true)}>{favs.length}</div>
+            </header>
+            <FavModal open={open} setOpen={setOpen}/>
+        </>
      );
 }
  

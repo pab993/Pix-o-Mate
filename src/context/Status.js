@@ -5,17 +5,22 @@ const StatusContext = createContext();
 
 export default function StatusProvider({children}) {
 
-    const [favs, setFavs] = useState(0);
+    const [favs, setFavs] = useState([]);
     const [catsCount, setCatsCount] = useState(0);
 
     useEffect(() => {
         
     }, []);
 
+    const updateFavs = (favs) => {
+      setFavs(favs);
+    }
+
     const contextValue = useMemo(() => {
         return {
           favs,
           catsCount,
+          updateFavs,
           setFavs,
           setCatsCount
         };
