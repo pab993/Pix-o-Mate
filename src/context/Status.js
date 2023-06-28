@@ -1,30 +1,32 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { instance } from "../utils/axios-config";
 
 const StatusContext = createContext();
 
 export default function StatusProvider({children}) {
 
     const [favs, setFavs] = useState([]);
-    const [catsCount, setCatsCount] = useState(0);
 
     useEffect(() => {
-        
+          try{
+              setFavs(window.localStorage.getItem("favs") ? JSON.parse(window.localStorage.getItem("favs")) : []);
+          } catch(e){
+              window.localStorage.removeItem('catsCount');
+              window.localStorage.removeItem('favs');
+          }
     }, []);
 
     const updateFavs = (favs) => {
       setFavs(favs);
+      localStorage.setItem('favs', JSON.stringify(favs));
     }
 
     const contextValue = useMemo(() => {
         return {
           favs,
-          catsCount,
           updateFavs,
           setFavs,
-          setCatsCount
         };
-      }, [favs, catsCount]);
+      }, [favs]);
 
     return (
         <StatusContext.Provider value={contextValue}>

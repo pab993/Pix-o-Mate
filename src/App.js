@@ -5,6 +5,7 @@ import HeaderComponent from "./components/header/Header";
 import MainComponent from "./components/main/Main";
 import OwnersPage from "./pages/owners/OwnersPage";
 import StatusProvider from './context/Status';
+import InterceptorProvider from "./context/Interceptor";
 
 function App() {
 
@@ -44,9 +45,11 @@ function App() {
 
   return (
     <>
-      <StatusProvider>
-        <RouterComponent />
-      </StatusProvider>
+      <InterceptorProvider >
+        <StatusProvider>
+          <RouterComponent />
+        </StatusProvider>
+      </InterceptorProvider>
     </>
   );
 }

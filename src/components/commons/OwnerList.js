@@ -3,7 +3,7 @@ import { instance } from "../../utils/axios-config";
 import loadingIcon from '../../assets/loading.gif';
 import './styles.scss';
 import DetailsComponent from "../../components/details/Details";
-import { generateCreationDate, generatePhone } from "../../utils/commons";
+import { generateCreationDate, generatePhoneHashing } from "../../utils/commons";
 import Search from "./Search";
 
 const OwnerList = ({text}) => {
@@ -64,8 +64,10 @@ const OwnerList = ({text}) => {
     const addData = (ownersList) => {
         let addedFields = ownersList.map((o) => {
             if(!o.hasOwnProperty("selected")){
-                o.phone = generatePhone();
+                //genera un teléfono aleatorio
+                //o.phone = generatePhone();
                 o.created_at = generateCreationDate(new Date(2012, 0, 1), new Date());
+                o.phone = generatePhoneHashing(o.id);
                 o.selected = false;
             }
             return o;

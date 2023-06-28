@@ -5,10 +5,12 @@ import FavModal from "../modals/FavModal";
 import './styles.scss';
 import { useNavigate } from "react-router-dom";
 import backIcon from '../../assets/back-arrow.png';
+import { useInterceptor } from "../../context/Interceptor";
 
 const Header = (props) => {
 
     const {favs} = useStatus();
+    const {apiCalls} = useInterceptor();
     const [open, setOpen] = useState(false);
     const bPages = CONFIG.pages.find((f) => f.slug === props?.page);
 
@@ -36,7 +38,7 @@ const Header = (props) => {
     return ( 
         <>
             <header className="header">
-                <div className="header-icon cat">0</div>
+                <div className="header-icon cat">{apiCalls}</div>
                 <div className="header-breadcrumbs">
                     {bPages && renderBreabcrumb(bPages.breadcrumbs)}
                 </div>
