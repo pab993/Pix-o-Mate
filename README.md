@@ -3,8 +3,10 @@
 
 ## Instalación:
 Para poder visualizar la aplicación debemos instalar los siguientes elementos:
- NodeJs, versión: 18.16.1
- Instalador de paquetes NPM, versión: 9.7.2
+
+1. NodeJs, versión: 18.16.1
+   
+2. Instalador de paquetes NPM, versión: 9.7.2
 
 **Paso 1**. Instalar NodeJS en su versión, para eso entraremos a su web oficial y descargaremos el instalador más actualizado https://nodejs.org/es/. Para comprobar que esté instalado correctamente podemos abrir la consola de comandos de Windows (CMD), y escribir: _node -v_
 Y para comprobar el instalador de paquetes: _npm -v_
