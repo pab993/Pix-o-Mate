@@ -10,33 +10,57 @@ export const generatePhone = () => {
 
 export const generateCreationDateFormatted = (start, end) => {
     let result = "";
-    const randomDate = start;
-    let years = end.getFullYear() - randomDate.getFullYear();
+    let days = 0;
+    let hours = 0;
+    let years = end.getFullYear() - start.getFullYear();
 
-    const monthRandomDiff = 12 - (randomDate.getMonth() + 1);
+    const monthRandomDiff = 12 - (start.getMonth() + 1);
     const monthEndDiff = end.getMonth() + 1;
 
     let months = monthRandomDiff + monthEndDiff;
-    
-    let days = 0;
-    let hours = 0;
 
     if(months >= 12){
       months = months % 12;
+    }else{
+      if(years !== 0){
+        years = years - 1;
+      }
     }
 
     if(years === 0 && months === 0){
-      days = end.getDate() - randomDate.getDate();
+      days = end.getDate() - start.getDate();
     }else if(years !== 0 || months !== 0){
-      const totalEndMonth = new Date(end.getFullYear(), end.getMonth() + 1, 0).getDate();
-      const daysEndDiff = totalEndMonth - end.getDate();
-      const daysCreatedDiff = randomDate.getDate();
-      days = (daysEndDiff + daysCreatedDiff);
+      
+      const totalDaysOfRandMonth = new Date(start.getFullYear(), start.getMonth()+1, 0).getDate();
+      const restDaysRandMonth = totalDaysOfRandMonth - start.getDate();
+      const restDaysEndMonth = end.getDate();
+      days = restDaysEndMonth + restDaysRandMonth;
+      const totalDaysOfEndMonth = new Date(end.getFullYear(), end.getMonth()+1, 0).getDate();
+
+      if(totalDaysOfEndMonth >= totalDaysOfRandMonth){
+        if(days > totalDaysOfEndMonth){
+          days = (days % totalDaysOfEndMonth);
+        }else if(days === totalDaysOfEndMonth){
+          days = (days % totalDaysOfEndMonth);
+        }else{
+          days = days;
+        }
+      }else{
+        if(days > totalDaysOfRandMonth){
+          days = (days % totalDaysOfRandMonth) + 1;
+        }else if(days === totalDaysOfRandMonth && restDaysRandMonth > 0){
+          days = (days % totalDaysOfRandMonth) + 1;
+        }else if((days < totalDaysOfRandMonth) && (days === totalDaysOfEndMonth)){
+          days = (days % totalDaysOfEndMonth);
+        }else{
+          days = days;
+        }
+      }
     }
 
     const endHours = end.getHours();
 
-    let randomHours = randomDate.getHours();
+    let randomHours = start.getHours();
 
     hours = (24 - randomHours) + endHours
 
