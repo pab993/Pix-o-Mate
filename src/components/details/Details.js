@@ -24,6 +24,7 @@ const Details = ({owners, setOwners}) => {
             await instance.get(buildUrl).then(function(resp) {
                 resp.data.phone = selected.phone;
                 resp.data.created_at = selected.created_at;
+                resp.data.created_at_formatted = selected.created_at_formatted;
                 resp.data.selected = true;
                 setCurrentOwner(resp.data);
                 let updatedOwnersList = owners.map((o) => {
@@ -60,6 +61,7 @@ const Details = ({owners, setOwners}) => {
                     <p>{currentOwner.status}</p>
                     <p>{currentOwner.phone}</p>
                     <p>{currentOwner.created_at}</p>
+                    <p>{currentOwner.created_at_formatted}</p>
                     <button className="btn" onClick={() => addRemoveFav(currentOwner)}>{favs.some(item => currentOwner.id === item.id) ? "Quitar de favoritos" : "Añadir a favoritos"}</button>
                 </div>
                 </div>
