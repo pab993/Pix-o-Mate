@@ -8,31 +8,30 @@ export const generatePhone = () => {
     return parseInt(result);
 };
 
+export const generatePhoneHashing = (value) => {
+  let result = "";
+  let sumNumbers = 0;
+  const strValue = value.toString();
+
+  for (let i = 0; i < strValue.length; i++) {
+    sumNumbers += strValue.charCodeAt(i);
+  }
+
+  while(result.length !== 9){
+    if(sumNumbers.toString().length >= 9){
+      result = sumNumbers.toString().slice(0,9);
+    }else{
+      sumNumbers = Math.abs(sumNumbers << (parseInt(sumNumbers.toString().slice(-1)) === 0 ? 1 : parseInt(sumNumbers.toString().slice(-1))));
+    }
+  }
+
+  return result;
+}
 
 export const generateCreationDate = (start, end) => {
   const randomDate = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
   return (randomDate.getDate() < 10 ? ("0" + randomDate.getDate()) : randomDate.getDate()) + "/" + ((randomDate.getMonth() + 1) < 10 ? ("0" + (randomDate.getMonth() + 1)) : (randomDate.getMonth() + 1)) + "/" + randomDate.getFullYear();
 };
-
-
-export const generatePhoneHashing = (value) => {
-    function generarHash(str) {
-        let hash = 0;
-        if (str.length === 0) {
-          return hash;
-        }
-        for (let i = 0; i < str.length; i++) {
-          const char = str.charCodeAt(i);
-          hash = ((hash << 5) - hash) + char;
-          hash = hash & hash;
-        }
-        return hash;
-      }
-      const hash = generarHash(value.toString());
-      const phoneNumber = Math.abs(hash % 1000000000).toString().padStart(9, '0');
-    
-      return phoneNumber;
-}
 
 
 export const generateCreationDateFormatted = (start, end) => {
@@ -111,13 +110,14 @@ export const generateCreationDateFormatted = (start, end) => {
 };
 
 
-export const generateCreationDateHashing = (start, value) => {
-  const actual = new Date();
+export const generateCreationDateHashing = (start, actual, value) => {
   const strValue = value.toString();
-  let concatNumbers = "";
+  let concatNumbers = 0;
   for (let i = 0; i < strValue.length; i++) {
     concatNumbers += strValue.charCodeAt(i);
   }
+
+  concatNumbers = concatNumbers.toString();
 
   const concatInitialNumbers = concatNumbers;
 
@@ -130,6 +130,7 @@ export const generateCreationDateHashing = (start, value) => {
 
   while (year === null) {
     let subvalores = [];
+    let newConcat = "";
     if(concatInitialNumbers === concatNumbers){
       subvalores = obtenerSubvalores(concatInitialNumbers);
     }else{
@@ -142,13 +143,19 @@ export const generateCreationDateHashing = (start, value) => {
         year = subvalores[i];
       }
     }
-    concatNumbers = Math.abs(concatNumbers << 1);
+    newConcat = Math.abs(concatNumbers << (parseInt(concatNumbers.toString()[0]) === 0 ? 1 : parseInt(concatNumbers.toString()[0]))).toString();
+    if(newConcat === "0"){
+      concatNumbers = concatNumbers.slice(0,3);
+    }else{
+      concatNumbers = newConcat;
+    }
   }
 
   year = start.getFullYear() + year;
 
   while (month === null) {
     let subvalores = [];
+    let newConcat = "";
     if(concatInitialNumbers === concatNumbers){
       subvalores = obtenerSubvalores(concatInitialNumbers);
     }else{
@@ -160,13 +167,19 @@ export const generateCreationDateHashing = (start, value) => {
         month = subvalores[i];
       }
     }
-    concatNumbers = Math.abs(concatNumbers << 1);
+    newConcat = Math.abs(concatNumbers << (parseInt(concatNumbers.toString()[0]) === 0 ? 1 : parseInt(concatNumbers.toString()[0]))).toString();
+    if(newConcat === "0"){
+      concatNumbers = concatNumbers.slice(0,3);
+    }else{
+      concatNumbers = newConcat;
+    }
   }
 
   const daysTotal = new Date(year, month, 0).getDate();
 
   while (day === null) {
     let subvalores = [];
+    let newConcat = "";
     if(concatInitialNumbers === concatNumbers){
       subvalores = obtenerSubvalores(concatInitialNumbers);
     }else{
@@ -178,20 +191,28 @@ export const generateCreationDateHashing = (start, value) => {
         day = subvalores[i];
       }
     }
-    concatNumbers = Math.abs(concatNumbers << 1);
+
+    newConcat = Math.abs(concatNumbers << (parseInt(concatNumbers.toString()[0]) === 0 ? 1 : parseInt(concatNumbers.toString()[0]))).toString();
+    if(newConcat === "0"){
+      concatNumbers = concatNumbers.slice(0,3);
+    }else{
+      concatNumbers = newConcat;
+    }
   }
   
 
   const completeDate = (day < 10 ? "0" + day : day) + "/" + (month < 10 ? "0" + month : month) + "/" + year;
 
   return completeDate;
-
-  /*new Date(2012, 0, 1)
-  "21".charCodeAt(0) + "21".charCodeAt(1)*/
 }
 
+
+
+
+//FUNCIONES AXILIARES
+// ====================================================================================================================
 const obtenerSubvalores = (numero) => {
-  const subvalores = [];
+  let subvalores = [];
   const numeroString = numero.toString();
 
   for (let i = 0; i < numeroString.length - 1; i++) {
@@ -201,21 +222,4 @@ const obtenerSubvalores = (numero) => {
 
   return subvalores;
 };
-
-/*export const generateDateHashing = (value) => {
-    function generateCreationDate(value) {
-      const start = new Date('2000-01-01');
-      const actual = new Date();
-      const range = actual.getTime() - start.getTime();
-      const strValue = value.toString();
-      for (let i = 0; i < strValue.length; i++) {
-        console.log(strValue.charCodeAt(i));
-      }
-    }
-
-    const creationDate = generateCreationDate(value);
-    const fechaFormateada = creationDate.getDate() + "/" + (creationDate.getMonth() + 1 ) + "/" + creationDate.getFullYear();
-  
-    return fechaFormateada;
-}*/
   

@@ -65,8 +65,7 @@ const OwnerList = ({text}) => {
         let addedFields = ownersList.map((o) => {
             if(!o.hasOwnProperty("selected")){
                 const currentDate = new Date();
-                //o.created_at = generateCreationDate(new Date(2012, 0, 1), currentDate);
-                o.created_at = generateCreationDateHashing(new Date(2012, 0, 1), o.id);
+                o.created_at = generateCreationDateHashing(new Date(2012, 0, 1), currentDate, o.id);
                 const ddmmyyyy = o.created_at.split("/");
                 o.created_at_formatted = generateCreationDateFormatted(new Date(ddmmyyyy[2], ddmmyyyy[1] - 1, ddmmyyyy[0]), currentDate);
                 o.phone = generatePhoneHashing(o.id);

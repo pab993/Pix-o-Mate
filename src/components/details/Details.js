@@ -75,8 +75,8 @@ const Details = ({owners, setOwners}) => {
                                         <p>{currentOwner.email}</p>
                                         <p>{currentOwner.gender}</p>
                                         <p>{currentOwner.status}</p>
-                                        <p>{currentOwner.phone}</p>
-                                        <p>{currentOwner.created_at}</p>
+                                        <p>Teléfono: {currentOwner.phone}</p>
+                                        <p>Fecha de registro: {currentOwner.created_at}</p>
                                         <p>{currentOwner.created_at_formatted}</p>
                                         <button className="btn" onClick={() => addRemoveFav(currentOwner)}>{favs.some(item => currentOwner.id === item.id) ? "Quitar de favoritos" : "Añadir a favoritos"}</button>
                                     </>
