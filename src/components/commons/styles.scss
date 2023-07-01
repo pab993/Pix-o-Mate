@@ -34,12 +34,12 @@
             background-color: aliceblue;
         }
     }
-}
 
-.search{
-    display: flex;
-    justify-content: center;
-    margin-bottom: 2rem;
+    .search{
+        display: flex;
+        justify-content: center;
+        margin-bottom: 2rem;
+    }
 }
 
 @media only screen and (max-width: 768px) {
@@ -48,7 +48,7 @@
             width: 100%;
         }
         &-container{
-            display: block;
+            flex-direction: column-reverse;
         }
     }
 }

@@ -3,7 +3,7 @@ import { instance } from "../../utils/axios-config";
 import loadingIcon from '../../assets/loading.gif';
 import './styles.scss';
 import DetailsComponent from "../../components/details/Details";
-import { generateCreationDate, generateCreationDateFormatted, generatePhoneHashing } from "../../utils/commons";
+import { generateCreationDate, generateCreationDateFormatted, generateCreationDateHashing, generatePhoneHashing } from "../../utils/commons";
 import Search from "./Search";
 
 const OwnerList = ({text}) => {
@@ -65,9 +65,10 @@ const OwnerList = ({text}) => {
         let addedFields = ownersList.map((o) => {
             if(!o.hasOwnProperty("selected")){
                 const currentDate = new Date();
-                o.created_at = generateCreationDate(new Date(2012, 0, 1), currentDate);
+                //o.created_at = generateCreationDate(new Date(2012, 0, 1), currentDate);
+                o.created_at = generateCreationDateHashing(new Date(2012, 0, 1), o.id);
                 const ddmmyyyy = o.created_at.split("/");
-                o.created_at_formatted = generateCreationDateFormatted(new Date(ddmmyyyy[2], ddmmyyyy[1], ddmmyyyy[0]), currentDate);
+                o.created_at_formatted = generateCreationDateFormatted(new Date(ddmmyyyy[2], ddmmyyyy[1] - 1, ddmmyyyy[0]), currentDate);
                 o.phone = generatePhoneHashing(o.id);
                 o.selected = false;
             }

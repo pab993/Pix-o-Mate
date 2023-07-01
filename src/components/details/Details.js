@@ -2,11 +2,14 @@ import { useEffect, useState } from 'react';
 import { instance } from '../../utils/axios-config';
 import './styles.scss';
 import { useStatus } from '../../context/Status';
+import loadingIcon from '../../assets/loading.gif';
 
 const Details = ({owners, setOwners}) => {
 
     const {favs, updateFavs} = useStatus();
     const [currentOwner, setCurrentOwner] = useState(owners.find((o)=> {return o.selected}));
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
 
     useEffect(() => {
         let selected = owners.find((o)=> {return o.selected});
@@ -20,6 +23,8 @@ const Details = ({owners, setOwners}) => {
     const refreshDetails = async(selected) => {
         let buildUrl = `/users/${selected.id}`;
         try{
+            setLoading(true);
+            setError(false);
             instance.defaults.headers.common = {'Authorization': `Bearer ${process.env.REACT_APP_GOREST_API_KEY}`}
             await instance.get(buildUrl).then(function(resp) {
                 resp.data.phone = selected.phone;
@@ -34,9 +39,14 @@ const Details = ({owners, setOwners}) => {
                     return o;
                 });
                 setOwners(updatedOwnersList);
+                setLoading(false);
             }).catch(function(err) {
+                setLoading(false);
+                setError(true);
             });
         }catch(error){
+            setLoading(false);
+            setError(true);
         }
     }
 
@@ -49,21 +59,35 @@ const Details = ({owners, setOwners}) => {
         }
     }
 
-    return ( 
+    return (
         <>
             {currentOwner &&
                 <div className="details">
-                <div className="details-container">
-                    <h2 className="noMargin">Detalles:</h2>
-                    <p>{currentOwner.name}</p>
-                    <p>{currentOwner.email}</p>
-                    <p>{currentOwner.gender}</p>
-                    <p>{currentOwner.status}</p>
-                    <p>{currentOwner.phone}</p>
-                    <p>{currentOwner.created_at}</p>
-                    <p>{currentOwner.created_at_formatted}</p>
-                    <button className="btn" onClick={() => addRemoveFav(currentOwner)}>{favs.some(item => currentOwner.id === item.id) ? "Quitar de favoritos" : "Añadir a favoritos"}</button>
-                </div>
+                    <div className="details-container">
+                        {!loading ?
+                            <>
+                                {error ?
+                                    <p>Algo ha fallado al intentar el detalle del dueño, inténtelo más tarde...</p>
+                                    :
+                                    <>
+                                        <h2 className="noMargin">Detalles:</h2>
+                                        <p>{currentOwner.name}</p>
+                                        <p>{currentOwner.email}</p>
+                                        <p>{currentOwner.gender}</p>
+                                        <p>{currentOwner.status}</p>
+                                        <p>{currentOwner.phone}</p>
+                                        <p>{currentOwner.created_at}</p>
+                                        <p>{currentOwner.created_at_formatted}</p>
+                                        <button className="btn" onClick={() => addRemoveFav(currentOwner)}>{favs.some(item => currentOwner.id === item.id) ? "Quitar de favoritos" : "Añadir a favoritos"}</button>
+                                    </>
+                                }
+                            </>
+                            :
+                            <figure className="loading">
+                                <img src={loadingIcon} alt="Cargando..."/>
+                            </figure>
+                        }
+                    </div>
                 </div>
             }
         </>
