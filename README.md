@@ -35,4 +35,5 @@ Y para comprobar el instalador de paquetes: _npm -v_
 ## Puntos del reto sin realizar:
 **El punto 3 de: Subiendo el reto**
 No he tenido tiempo de realizar ningún apartado de éste último y tampoco consultar su funcionamiento debido a la caída del dominio el domingo día 2 de Julio. https://gorest.co.in/
+
 **El último punto de: Becoming a Pro...**
