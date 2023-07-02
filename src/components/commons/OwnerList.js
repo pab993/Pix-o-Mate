@@ -92,8 +92,11 @@ const OwnerList = ({text}) => {
             if(!o.hasOwnProperty("selected")){
                 const currentDate = new Date();
                 o.created_at = generateCreationDateHashing(new Date(2012, 0, 1), currentDate, o.id);
-                const ddmmyyyy = o.created_at.split("/");
-                o.created_at_formatted = generateCreationDateFormatted(new Date(ddmmyyyy[2], ddmmyyyy[1] - 1, ddmmyyyy[0]), currentDate);
+                const ddmmyyyAndhhmm = o.created_at.split(" ");
+                const ddmmyyyy = ddmmyyyAndhhmm[0].split("/");
+                const hhmm = ddmmyyyAndhhmm[1].split(":");
+                const hh = hhmm[0];
+                o.created_at_formatted = generateCreationDateFormatted(new Date(ddmmyyyy[2], ddmmyyyy[1] - 1, ddmmyyyy[0], hh), currentDate);
                 o.phone = generatePhoneHashing(o.id);
                 o.selected = false;
             }

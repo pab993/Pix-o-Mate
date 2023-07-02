@@ -123,32 +123,37 @@ export const generateCreationDateHashing = (start, actual, value) => {
 
   const yearsDiff = actual.getFullYear() - start.getFullYear();
   const monthsTotal = 12;
+  const hoursTotal = 23;
 
   let year = null;
   let month = null;
   let day = null;
+  let hour = null;
 
   while (year === null) {
-    let subvalores = [];
-    let newConcat = "";
-    if(concatInitialNumbers === concatNumbers){
-      subvalores = obtenerSubvalores(concatInitialNumbers);
+    if(yearsDiff === 0){
+      year = 0;
     }else{
-      subvalores = obtenerSubvalores(concatNumbers);
-    }
-    
-
-    for (let i = 0; i < subvalores.length; i++) {
-      if (yearsDiff > subvalores[i]) {
-        year = subvalores[i];
+      let subvalores = [];
+      let newConcat = "";
+      if(concatInitialNumbers === concatNumbers){
+        subvalores = obtenerSubvalores(concatInitialNumbers);
+      }else{
+        subvalores = obtenerSubvalores(concatNumbers);
       }
-    }
-    newConcat = Math.abs(concatNumbers << (parseInt(concatNumbers.toString()[0]) === 0 ? 1 : parseInt(concatNumbers.toString()[0]))).toString();
-    newConcat = newConcat.replace("000", (parseInt(concatNumbers.toString()[0]) === 0 ? 1 : parseInt(concatNumbers.toString()[0])));
-    if(newConcat === "0"){
-      concatNumbers = concatNumbers.slice(0,3);
-    }else{
-      concatNumbers = newConcat;
+      
+      for (let i = 0; i < subvalores.length; i++) {
+        if (yearsDiff > subvalores[i]) {
+          year = subvalores[i];
+        }
+      }
+      newConcat = Math.abs(concatNumbers << (parseInt(concatNumbers.toString()[0]) === 0 ? 1 : parseInt(concatNumbers.toString()[0]))).toString();
+      newConcat = newConcat.replace("000", (parseInt(concatNumbers.toString()[0]) === 0 ? 1 : parseInt(concatNumbers.toString()[0])));
+      if(newConcat === "0"){
+        concatNumbers = concatNumbers.slice(0,3);
+      }else{
+        concatNumbers = newConcat;
+      }
     }
   }
 
@@ -202,9 +207,33 @@ export const generateCreationDateHashing = (start, actual, value) => {
       concatNumbers = newConcat;
     }
   }
+
+  while (hour === null) {
+    let subvalores = [];
+    let newConcat = "";
+    if(concatInitialNumbers === concatNumbers){
+      subvalores = obtenerSubvalores(concatInitialNumbers);
+    }else{
+      subvalores = obtenerSubvalores(concatNumbers);
+    }
+
+    for (let i = 0; i < subvalores.length; i++) {
+      if (hoursTotal >= subvalores[i]) {
+        hour = subvalores[i];
+      }
+    }
+
+    newConcat = Math.abs(concatNumbers << (parseInt(concatNumbers.toString()[0]) === 0 ? 1 : parseInt(concatNumbers.toString()[0]))).toString();
+    newConcat = newConcat.replace("000", (parseInt(concatNumbers.toString()[0]) === 0 ? 1 : parseInt(concatNumbers.toString()[0])));
+    if(newConcat === "0"){
+      concatNumbers = concatNumbers.slice(0,3);
+    }else{
+      concatNumbers = newConcat;
+    }
+  }
   
 
-  const completeDate = (day < 10 ? "0" + day : day) + "/" + (month < 10 ? "0" + month : month) + "/" + year;
+  const completeDate = (day < 10 ? "0" + day : day) + "/" + (month < 10 ? "0" + month : month) + "/" + year + " " + hour + ":00";
 
   return completeDate;
 }
