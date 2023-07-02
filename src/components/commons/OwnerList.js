@@ -31,7 +31,6 @@ const OwnerList = ({text}) => {
                 
                 if (windowHeight + scrollTop >= documentHeight) {
                     addMore();
-                    console.log('Fin de la ventana alcanzado');
                 }
             }
           };

@@ -4,7 +4,7 @@ import './styles.scss';
 
 const FavModal = ({open, setOpen}) => {
 
-    const {favs} = useStatus();
+    const {favs, setFavs} = useStatus();
 
     const handleClose = (e) => {
         setOpen(false);
@@ -29,6 +29,7 @@ const FavModal = ({open, setOpen}) => {
                                             </Fragment>
                                         )
                                     })}
+                                    <button className="btn" onClick={()=> setFavs([])}>Eliminar todos de favoritos</button>
                                 </>
                             )
                             :

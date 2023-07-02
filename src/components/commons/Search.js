@@ -21,7 +21,6 @@ const Search = ({handleSubmit, search, setSearch, setCurrentPage}) => {
             }
     
             const newTimeoutId = setTimeout(() =>{
-                console.log('Ejecutando función...');
                 setCurrentPage(1);
                 handleSubmit(1,event.target.value);
             }, 3000);
