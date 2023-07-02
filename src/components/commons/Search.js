@@ -7,7 +7,8 @@ const Search = ({handleSubmit, search, setSearch, setCurrentPage}) => {
     useEffect(() => {
         return () => {
             if (timeoutId) {
-            clearTimeout(timeoutId);
+                console.log("El timeoutid!" + timeoutId);
+                clearTimeout(timeoutId);
             }
         };
     }, [timeoutId]);
@@ -15,11 +16,11 @@ const Search = ({handleSubmit, search, setSearch, setCurrentPage}) => {
     const handleChangeText = (event) => {
         setSearch(event.target.value);
 
+        if (timeoutId) {
+            clearTimeout(timeoutId);
+        }
+
         if(event.target.value.length >= 2){
-            if (timeoutId) {
-                clearTimeout(timeoutId);
-            }
-    
             const newTimeoutId = setTimeout(() =>{
                 setCurrentPage(1);
                 handleSubmit(1,event.target.value);
