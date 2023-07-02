@@ -3,7 +3,7 @@ import { instance } from "../../utils/axios-config";
 import loadingIcon from '../../assets/loading.gif';
 import './styles.scss';
 import DetailsComponent from "../../components/details/Details";
-import { generateCreationDate, generateCreationDateFormatted, generateCreationDateHashing, generatePhoneHashing } from "../../utils/commons";
+import { generateCreationDateFormatted, generateCreationDateHashing, generatePhoneHashing } from "../../utils/commons";
 import Search from "./Search";
 
 const OwnerList = ({text}) => {
@@ -15,14 +15,40 @@ const OwnerList = ({text}) => {
     const [totalPages, setTotalPages] = useState();
     const [loading, setLoading] = useState(true);
     const [loadingBtn, setLoadingBtn] = useState(false);
+    const [toggle, setToggle] = useState(true);
     const [error, setError] = useState(false);
 
     useEffect(() => {
         loadOwnersData();
     }, []);
 
-    const loadOwnersData = async (startPage = 1) => {
-        let buildUrl = `/users?page=${startPage}&per_page=${PER_PAGE}` + (text ? `&name=${search}` : "");
+    useEffect(() => {
+        const handleScroll = () => {
+            if(!toggle){
+                const windowHeight = window.innerHeight;
+                const documentHeight = document.documentElement.scrollHeight;
+                const scrollTop = window.scrollY || document.documentElement.scrollTop;
+                
+                if (windowHeight + scrollTop >= documentHeight) {
+                    addMore();
+                    console.log('Fin de la ventana alcanzado');
+                }
+            }
+          };
+      
+          window.addEventListener('scroll', handleScroll);
+      
+          return () => {
+            window.removeEventListener('scroll', handleScroll);
+          };
+    }, [toggle, currentPage]);
+
+    const handleChangeToggle = () => {
+        setToggle(!toggle);
+    }
+
+    const loadOwnersData = async (startPage = 1, optionalSearch = null) => {
+        let buildUrl = `/users?page=${startPage}&per_page=${PER_PAGE}` + (text ? `&name=${optionalSearch ? optionalSearch : search}` : "");
         try{
             instance.defaults.headers.common = {'Authorization': `Bearer ${process.env.REACT_APP_GOREST_API_KEY}`}
         
@@ -109,7 +135,8 @@ const OwnerList = ({text}) => {
                 </figure>
                 :
                 <div className="owners">
-                    {text && <Search handleSubmit={loadOwnersData} search={search} setSearch={setSearch}/>}
+                    <button className="btn toggle" onClick={handleChangeToggle}>Alternar entre botón de cargar e "infinite scroll"</button>
+                    {text && <Search handleSubmit={loadOwnersData} search={search} setSearch={setSearch} setCurrentPage={setCurrentPage}/>}
                     <div className="owners-container">
                         {error ? 
                             <p>Algo ha fallado al intentar recuperar los dueños, inténtelo más tarde...</p>
@@ -136,16 +163,22 @@ const OwnerList = ({text}) => {
                                             )
                                         }
                                     </ul>
-                                    {currentPage !== totalPages &&
+                                    
+                                    {toggle &&
                                         <>
-                                            {loadingBtn ?
-                                                <button className="btn" disabled>Cargando...</button>
-                                            :    
-                                                <button className="btn" onClick={addMore}>Ver más</button>
+                                            {currentPage !== totalPages &&
+                                                <>
+                                                    {loadingBtn ?
+                                                        <button className="btn" disabled>Cargando...</button>
+                                                    :    
+                                                        <button className="btn" onClick={addMore}>Ver más</button>
+                                                    }
+                                                    
+                                                </>
                                             }
-                                            
                                         </>
                                     }
+                                    
                                 </div>
                                 <DetailsComponent owners={owners} setOwners={setOwners}/>
                             </>

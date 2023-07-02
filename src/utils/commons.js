@@ -144,6 +144,7 @@ export const generateCreationDateHashing = (start, actual, value) => {
       }
     }
     newConcat = Math.abs(concatNumbers << (parseInt(concatNumbers.toString()[0]) === 0 ? 1 : parseInt(concatNumbers.toString()[0]))).toString();
+    newConcat = newConcat.replace("000", (parseInt(concatNumbers.toString()[0]) === 0 ? 1 : parseInt(concatNumbers.toString()[0])));
     if(newConcat === "0"){
       concatNumbers = concatNumbers.slice(0,3);
     }else{
@@ -168,6 +169,7 @@ export const generateCreationDateHashing = (start, actual, value) => {
       }
     }
     newConcat = Math.abs(concatNumbers << (parseInt(concatNumbers.toString()[0]) === 0 ? 1 : parseInt(concatNumbers.toString()[0]))).toString();
+    newConcat = newConcat.replace("000", (parseInt(concatNumbers.toString()[0]) === 0 ? 1 : parseInt(concatNumbers.toString()[0])));
     if(newConcat === "0"){
       concatNumbers = concatNumbers.slice(0,3);
     }else{
@@ -193,6 +195,7 @@ export const generateCreationDateHashing = (start, actual, value) => {
     }
 
     newConcat = Math.abs(concatNumbers << (parseInt(concatNumbers.toString()[0]) === 0 ? 1 : parseInt(concatNumbers.toString()[0]))).toString();
+    newConcat = newConcat.replace("000", (parseInt(concatNumbers.toString()[0]) === 0 ? 1 : parseInt(concatNumbers.toString()[0])));
     if(newConcat === "0"){
       concatNumbers = concatNumbers.slice(0,3);
     }else{

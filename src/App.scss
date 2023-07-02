@@ -22,6 +22,10 @@ ul{
     &:hover{
         background-color: #F7F7F7;
     }
+    &.toggle{
+        width: 400px;
+        margin: 0 auto 20px auto;
+    }
 }
 
 .loading{
@@ -29,5 +33,13 @@ ul{
     img{
         width: 50px;
         height: 50px;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .btn{
+        &.toggle{
+            width: 100%;
+        }
     }
 }
