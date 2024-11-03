@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+/*import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 const StatusContext = createContext();
 
@@ -20,10 +20,16 @@ export default function StatusProvider({children}) {
       localStorage.setItem('favs', JSON.stringify(favs));
     }
 
+    const deleteFavs = (favs) => {
+      setFavs(favs);
+      localStorage.removeItem('favs');
+    }
+
     const contextValue = useMemo(() => {
         return {
           favs,
           updateFavs,
+          deleteFavs,
           setFavs,
         };
       }, [favs]);
@@ -35,4 +41,4 @@ export default function StatusProvider({children}) {
     );
 }
 
-export const useStatus = () => useContext(StatusContext);
+export const useStatus = () => useContext(StatusContext);*/

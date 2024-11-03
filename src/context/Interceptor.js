@@ -6,25 +6,48 @@ const InterceptorContext = createContext();
 export default function InterceptorProvider({children}) {
 
     const [apiCalls, setApiCalls] = useState(0);
+    const [favs, setFavs] = useState([]);
+    
     useEffect(() => {
 
-        const apiInterceptor = instance.interceptors.request.use((config) => {
-            setApiCalls((prevApiCalls) => prevApiCalls + 1);
-            return config;
-        });
-
-        return () => {
-            instance.interceptors.request.eject(apiInterceptor);
-        };
+        try{
+            setFavs(window.localStorage.getItem("favs") ? JSON.parse(window.localStorage.getItem("favs")) : []);
+            const apiInterceptor = instance.interceptors.request.use((config) => {
+                setApiCalls((prevApiCalls) => prevApiCalls + 1);
+                return config;
+            });
+    
+            return () => {
+                instance.interceptors.request.eject(apiInterceptor);
+            };
+        } catch(e){
+            window.localStorage.removeItem('catsCount');
+            window.localStorage.removeItem('favs');
+        }
+        
     }, []);
+
+    const updateFavs = (favs) => {
+        setFavs(favs);
+        localStorage.setItem('favs', JSON.stringify(favs));
+      }
+  
+      const deleteFavs = (favs) => {
+        setFavs(favs);
+        localStorage.removeItem('favs');
+      }
 
 
     const contextValue = useMemo(() => {
         return {
             apiCalls,
-            setApiCalls
+            setApiCalls,
+            favs,
+            updateFavs,
+            deleteFavs,
+            setFavs
         };
-    }, [apiCalls]);
+    }, [apiCalls, favs]);
 
     return (
         

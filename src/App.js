@@ -46,9 +46,9 @@ function App() {
   return (
     <>
       <InterceptorProvider >
-        <StatusProvider>
+        {/*<StatusProvider>*/}
           <RouterComponent />
-        </StatusProvider>
+        {/*</StatusProvider>*/}
       </InterceptorProvider>
     </>
   );

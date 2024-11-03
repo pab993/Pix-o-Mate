@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { instance } from '../../utils/axios-config';
 import './styles.scss';
-import { useStatus } from '../../context/Status';
+import { useInterceptor } from '../../context/Interceptor';
 import loadingIcon from '../../assets/loading.gif';
 
 const Details = ({owners, setOwners}) => {
 
-    const {favs, updateFavs} = useStatus();
+    const {favs, updateFavs} = useInterceptor();
     const [currentOwner, setCurrentOwner] = useState(owners.find((o)=> {return o.selected}));
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);

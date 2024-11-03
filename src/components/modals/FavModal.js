@@ -1,10 +1,10 @@
 import { Fragment } from 'react';
-import { useStatus } from '../../context/Status';
+import { useInterceptor } from '../../context/Interceptor';
 import './styles.scss';
 
 const FavModal = ({open, setOpen}) => {
 
-    const {favs, setFavs} = useStatus();
+    const {favs, deleteFavs} = useInterceptor();
 
     const handleClose = (e) => {
         setOpen(false);
@@ -29,7 +29,7 @@ const FavModal = ({open, setOpen}) => {
                                             </Fragment>
                                         )
                                     })}
-                                    <button className="btn" onClick={()=> setFavs([])}>Eliminar todos de favoritos</button>
+                                    <button className="btn" onClick={()=> deleteFavs([])}>Eliminar todos de favoritos</button>
                                 </>
                             )
                             :
